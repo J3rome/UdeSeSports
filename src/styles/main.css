@@ -1,0 +1,18 @@
+#nav-header {
+  background-color: #2B2B2B;
+  border-color: #2B2B2B;
+}
+
+#nav-title {
+  background-color: #00784B;
+  color: white;
+}
+
+#title:hover,
+#title:focus {
+	color: white;
+}
+
+body { 
+	padding-top: 60px; 
+}

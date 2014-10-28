@@ -1,0 +1,112 @@
+<html ng-app="matches" ng-controller="matchesController">
+
+<head>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link href="../../styles/main.css" rel="stylesheet" media="screen">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		    <div class="navbar-header">
+		        <a id="nav-title" class="navbar-brand" href="#">League of Legends - UdeS</a>
+		    </div>
+		</nav>
+	</div>
+	<div class="container-fluid">
+	 	<table class="table"> 
+		    <tr>
+		        <th>Player</th>
+		        <th>Champ</th>
+		        <th>K/D/A</th>
+		        <th style="width:110px">Items</th>
+		        <th>Summoner Spells</th>
+		        <th>Killing Spree</th>
+		        <th>Largest Multikill</th>
+		        <th>Total Gold</th>
+		        <th>Gold Per Minute</th>
+		        <th>Minions Killed</th>
+		        <th>Minions Per 10 Minutes</th>
+		    </tr>
+
+			<tr ng-repeat="x in match.teamPlayerParticipantsSummaries">
+			<td>
+				{{
+					x.summonerName
+				}}
+			</td>
+
+			<td>
+				<img src="../../assets/img/champion/{{x.skinName}}.png" style="max-height:36px; min-height:36px;">
+			</td>
+			
+			<td>
+				{{ 
+					(x.statistics | filter:{statTypeName:'ASSISTS'})[0].value +"/"+ 
+					(x.statistics | filter:{statTypeName:'NUM_DEATHS'})[0].value +"/"+ 
+					(x.statistics | filter:{statTypeName:'CHAMPIONS_KILLED'})[0].value
+				}}
+			</td>
+			
+			<td>
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM0'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM1'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM3'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM2'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM4'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM5'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+				<img src="../../assets/img/item/{{(x.statistics | filter:{statTypeName:'ITEM6'})[0].value}}.png" style="max-height:24px; min-height:24px;">
+			</td>
+
+			<td>
+			</td>
+			
+			<td>
+				{{ 
+					(x.statistics | filter:{statTypeName:'LARGEST_KILLING_SPREE'})[0].value
+				}}
+			</td>
+			
+			<td>
+				{{ 
+					(x.statistics | filter:{statTypeName:'LARGEST_MULTI_KILL'})[0].value
+				}}
+			</td>
+			
+			<td>
+				{{ 
+					(x.statistics | filter:{statTypeName:'GOLD_EARNED'})[0].value | number
+				}}
+			</td>
+			
+			<td>
+				{{ 
+					((x.statistics | filter:{statTypeName:'GOLD_EARNED'})[0].value / match.gameLength) * 60 | number
+				}}
+			</td>
+			
+			<td>
+				{{ 
+					(x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[0].value +
+					(x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[1].value +
+					(x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[2].value +
+					(x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[3].value
+				}}
+			</td>
+			
+			<td>
+				{{ 
+					((x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[0].value +
+					 (x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[1].value +
+					 (x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[2].value +
+					 (x.statistics | filter:{statTypeName:'MINIONS_KILLED'})[3].value ) / (match.gameLength / 600) | number
+				}}
+			</td>
+		    </tr>
+	  	</table>
+	</div>
+	<script src="matches.js"></script> 
+	<script src="matchesController.js"></script> 
+</body>
+</html>
