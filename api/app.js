@@ -3,7 +3,7 @@ var http = require("http"),
     levelup= require("levelup",{'keyEncoding':'string','valueEncoding':'json'}),
     url= require("url"),
     db = levelup("./testDb"),
-    port = 80,
+    port = 8085,
     statusCode=200;
     
 var server = http.createServer(function(request, response) {
