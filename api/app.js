@@ -1,6 +1,6 @@
 //underscore
 var http = require("http"),
-    levelup= require("levelup",{'keyEncoding':'string','valueEncoding':'json'}),
+    levelup= require("level",{'keyEncoding':'string','valueEncoding':'json'}),
     url= require("url"),
     db = levelup("./testDb"),
     port = 8085,
