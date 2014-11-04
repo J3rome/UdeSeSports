@@ -1,0 +1,7 @@
+TODO :
+
+	- Mod Proxy + apache pour redirection du port de l'api ? evite le cross domain. Sinnon on fait du JSONP
+	- Api Router module
+	- Structure de la base de donnee
+	- Structure du projet nodeJs
+	- Plein d'autres shitt
