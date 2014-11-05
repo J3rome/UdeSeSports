@@ -1,15 +1,13 @@
 - teams:
     - team:
+	- id
         - name
-        - victories
+        - players:[
+            - playerId
+		]
+	- victories
         - defeats
         - seed
-        - players:
-            - player:
-                - summoner_name
-                - first_name
-                - last_name
-                - rank
         - player_most_kills
         - player_most_assists
         - player_least_deaths

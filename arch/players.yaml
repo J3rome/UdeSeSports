@@ -1,13 +1,15 @@
 - players:
     - player:
+	- id
         - summoner_name
         - first_name
         - last_name
         - email
         - team_name
+	- rank
+
         - team_victories
         - team_defeats
-        - rank
         - kills
         - deaths
         - assists
