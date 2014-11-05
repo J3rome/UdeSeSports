@@ -1,10 +1,10 @@
-- team_list:
-    - teamX:
+- teams:
+    - team:
         - name
         - victories
         - defeats
         - seed
-        - player_list:
+        - players:
             - player:
                 - summoner_name
                 - first_name

@@ -1,5 +1,5 @@
-- player_list:
-    - playerX:
+- players:
+    - player:
         - summoner_name
         - first_name
         - last_name

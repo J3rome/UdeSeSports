@@ -1,9 +1,9 @@
-- match_list:
-    - matchX: 
+- matches:
+    - match: 
         - game_time
         - game_date
-        - team1_name
-        - team2_name
+        - victory_team_name
+        - defeat_team_name
         - teams:
             - team1:
                 - name
@@ -11,59 +11,61 @@
                 - gold
                 - result
                 - players:
-                    - name
-                    - champion
-                    - summonner spells
-                    - level
-                    - gold
-                    - kills
-                    - deaths
-                    - assists
-                    - kda
-                    - kill_participation
-                    - creep_score
-                    - wards_bought
-                    - wards_placed
-                    - largest_multikill
-                    - damage_dealt
-                    - damage_taken
-                    - healing_done
-                    - items:
-                        - item1
-                        - item2
-                        - item3
-                        - item4
-                        - item5
-                        - item6
-                        - trinket
+                    player:
+                        - name
+                        - champion
+                        - summonner_spells
+                        - level
+                        - gold
+                        - kills
+                        - deaths
+                        - assists
+                        - kda
+                        - kill_participation
+                        - creep_score
+                        - wards_bought
+                        - wards_placed
+                        - largest_multikill
+                        - damage_dealt
+                        - damage_taken
+                        - healing_done
+                        - items:
+                            - item1
+                            - item2
+                            - item3
+                            - item4
+                            - item5
+                            - item6
+                            - trinket
             - team2:
                 - name
                 - kills
                 - gold
                 - result
                 - players:
-                    - name
-                    - champion
-                    - summonner spells
-                    - level
-                    - gold
-                    - kills
-                    - deaths
-                    - assists
-                    - kda
-                    - kill_participation
-                    - creep_score
-                    - wards_bought
-                    - wards_placed
-                    - largest_multikill
-                    - damage_dealt
-                    - damage_taken
-                    - healing_done
-                    - items:
-                        - item1
-                        - item2
-                        - item3
-                        - item4
-                        - item5
-                        - item6
-                        - trinket                        
+                    -player:
+                        - name
+                        - champion
+                        - summonner_spells
+                        - level
+                        - gold
+                        - kills
+                        - deaths
+                        - assists
+                        - kda
+                        - kill_participation
+                        - creep_score
+                        - wards_bought
+                        - wards_placed
+                        - largest_multikill
+                        - damage_dealt
+                        - damage_taken
+                        - healing_done
+                        - items:
+                            - item1
+                            - item2
+                            - item3
+                            - item4
+                            - item5
+                            - item6
+                            - trinket                        
