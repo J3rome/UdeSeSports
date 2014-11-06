@@ -1,6 +1,8 @@
 // Router module
 var helpers = require('./helpers.js');
 
+// TODO: Add another level (/matches/action/{GET-POST})
+
 module.exports = self = {
     handleUri: function(uriString){
         var uri = helpers.getSplittedUri(uriString);

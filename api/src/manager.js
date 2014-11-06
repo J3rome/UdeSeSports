@@ -1,6 +1,7 @@
 // Highlevel abstraction of the backend. Provide interface to manage the backend.
 
 var helpers = require('./helpers.js'),
+    gameParser = require('./gameParser.js'),
     level = require('level',{'keyEncoding':'string','valueEncoding':'json'}),
     sublevel = require('level-sublevel'),
     db = sublevel(level('./testDb')),
@@ -50,6 +51,37 @@ module.exports = {
         teams.get(id,function(err,value){
             if(err){
                 // TODO: Handle error here
+                callback(err);
+            }else{
+                callback(undefined,value);
+            }
+        });
+    },
+    saveMatche : function(data, callback){
+        helpers.getId(matches, function(generatedId){
+            if(generatedId == undefined){
+                // Id generation failed
+                // TODO: Implement error handling (call callback with internal err ?)
+            }else if(helpers.validateMatcheData(data)){
+                // TODO : Should we just include underscore in here ?
+                data = gameParser.getGameInfos(data);
+                helpers._.extend(data,{'id':generatedId});
+                // TODO: Implement hook on this ?
+                // TODO: Update infos in players profiles
+                // TODO: Identify the teamId associated with the 2 teams of this game, extend the object with both teams id
+                matches.put(generatedId, JSON.stringify(data), function(err){
+                    if(err){
+                        callback(err);
+                    }else{
+                        callback(undefined, data);
+                    }
+                });
+            }
+        });
+    },
+    getMatche : function(id, callback){
+        matches.get(id, function(err,value){
+            if(err){
                 callback(err);
             }else{
                 callback(undefined,value);

@@ -1,8 +1,7 @@
 //underscore
 var http = require("http"),
     httpHandler = require("./src/httpHandler.js"),
-    port = 8085,
-    statusCode=200;
+    port = 8085;
 
 var server = http.createServer(function(request, response) {
     httpHandler(request,response);

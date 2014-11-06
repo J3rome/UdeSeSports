@@ -5,6 +5,8 @@ var _ = require('underscore');
 var ID_RETRY_LIMIT = 15;
 
 module.exports = self = {
+    // Export underscore (Really usefull ?)
+    _: _,
    // Return a valid Id for the selected db sublevel
     getId: function(db,callback,counter){
         if(counter == undefined){
@@ -31,6 +33,12 @@ module.exports = self = {
         }
         return false;
     },
+    // Return true if the data required to parse matches info are valid
+    validateMatcheData: function(data){
+        // TODO: Implement validateMatcheData
+        return true;
+    },
+    // Return the provided uri in the form of an array
     getSplittedUri: function(uriString){
         if(uriString[uriString.length-1] == '/'){
             uriString = uriString.substring(0,uriString.length-1);
