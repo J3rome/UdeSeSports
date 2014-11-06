@@ -30,6 +30,12 @@ module.exports = self = {
             return true;
         }
         return false;
+    },
+    getSplittedUri: function(uriString){
+        if(uriString[uriString.length-1] == '/'){
+            uriString = uriString.substring(0,uriString.length-1);
+        }
+        return uriString.substring(1).split('/');
     }
 }
 
