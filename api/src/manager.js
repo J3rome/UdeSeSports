@@ -2,7 +2,7 @@
 
 var helpers = require('./helpers.js'),
     gameParser = require('./gameParser.js'),
-    level = require('level',{'keyEncoding':'string','valueEncoding':'json'}),
+    level = require('levelup',{'keyEncoding':'string','valueEncoding':'json'}),
     sublevel = require('level-sublevel'),
     db = sublevel(level('./testDb')),
     matches = db.sublevel('matches'),
