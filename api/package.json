@@ -1,0 +1,12 @@
+{
+    "name": "UdeSeSports",
+    "version": "0.0.1",
+    "scripts": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "underscore": "1.7.0",
+        "level": "0.18.0",
+        "level-sublevel": "6.3.15"
+    }
+}

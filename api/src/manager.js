@@ -69,6 +69,7 @@ module.exports = {
                 // TODO: Implement hook on this ?
                 // TODO: Update infos in players profiles
                 // TODO: Identify the teamId associated with the 2 teams of this game, extend the object with both teams id
+                // TODO: associate each player with a playerid corresponding with it summoner name
                 matches.put(generatedId, JSON.stringify(data), function(err){
                     if(err){
                         callback(err);
