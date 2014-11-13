@@ -7,9 +7,12 @@ var helpers = require('./helpers.js'),
     db = sublevel(level('./testDb')),
     matches = db.sublevel('matches'),
     teams = db.sublevel('teams'),
-    players = db.sublevel('players');
+    players = db.sublevel('players'),
+    self;
 
-module.exports = {
+    // TODO: Global error catching, node can't crash because of an error of parsing..
+
+module.exports = self = {
     // Create an entry in DB for a new team
     // The data must contain the name and a list of valid players id
     createTeam : function(data, callback) {
@@ -57,6 +60,17 @@ module.exports = {
             }
         });
     },
+    getTeamName : function(id, callback){
+        // TODO : Validate team name is not empty
+        teams.get(id,function(err,value){
+            if(err){
+                // TODO: Handle error here
+                callback(err);
+            }else{
+                callback(undefined,JSON.parse(value).name);
+            }
+        });
+    },
     saveMatche : function(data, callback){
         helpers.getId(matches, function(generatedId){
             if(generatedId == undefined){
@@ -86,6 +100,57 @@ module.exports = {
                 callback(err);
             }else{
                 callback(undefined,value);
+            }
+        });
+    },
+    createPlayer : function(data, callback){
+        helpers.getId(players, function(generatedId){
+            if(generatedId == undefined){
+                // Id generation failed
+                // TODO : Implement error handling (call callback with internal err ?)
+            }else if(helpers.validatePlayerData(data)){
+                // TODO : More validation on players, does the id exist ?
+                //        (require callback, edit this in helpers.js)
+                var player = {
+                    id: generatedId,
+                    summonerName: data.summonerName,
+                    firstName : data.firstName,
+                    lastName : data.lastName,
+                    email : data.email,
+            	    rank : data.rank,              // TODO : Parse rank in enum
+                    teamId : data.teamId,       // TODO : Validate team ID
+                    kills : 0,
+                    deaths : 0,
+                    assists : 0,
+                    kda : 0,
+                    kill_participation : 0
+                };
+                players.put(generatedId,JSON.stringify(player),function(err){
+                    if(err){
+                        callback(err);
+                    }else{
+                        callback(undefined,player);
+                    }
+                });
+            }else{
+                // Data provided are not valid
+            }
+        });
+    },
+    getPlayer : function(id, callback){
+        players.get(id, function(err,value){
+            if(err){
+                callback(err);
+            }else{
+                value = JSON.parse(value);
+                self.getTeamName(value.teamId, function(err, teamName){
+                    if(err){
+                        callback(err);
+                    }else{
+                        value.teamName = teamName;
+                        callback(undefined,value);
+                    }
+                });
             }
         });
     }

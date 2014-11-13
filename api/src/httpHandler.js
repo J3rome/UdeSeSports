@@ -3,22 +3,34 @@ var manager = require('./manager.js'),
     helpers = require('./helpers.js');
 
 module.exports = function(request,response){
-    var toCall = router.handleUri(request.url);
+    var toCall = router.handleFirstLevelUri(request.url);
 
     if(toCall){
-        handler[toCall](request,response);
+        firstLevelHandler[toCall](request,response);
     }else{
         handleInvalidUri(request,response);
     }
 }
 
-var handler = {
+var firstLevelHandler = {
+    handleManager: function(request,response){
+        var toCall = router.handleManagerUri(request.url);
+
+        if(toCall){
+            managerHandler[toCall](request,response);
+        }else{
+            handleInvalidUri(request,response);
+        }
+    }
+};
+
+var managerHandler = {
     handleTeams: function(request,response){
         var uri = helpers.getSplittedUri(request.url),
             statusCode = 200;
 
         if(request.method == 'PUT'){
-            if(uri.length == 1){
+            if(uri.length == 2){
                 var body = '';
                 request.on('data', function(data){
                     body += data;
@@ -57,8 +69,8 @@ var handler = {
                 handleInvalidUri(request,response);
             }
         }else if(request.method == 'GET'){
-            if(uri.length == 2){
-                manager.getTeam(uri[1],function(err,value){
+            if(uri.length == 3){
+                manager.getTeam(uri[2],function(err,value){
                     if(err){
                         data = JSON.stringify({
                             'error':err.type,
@@ -78,8 +90,80 @@ var handler = {
         }
     },
     handlePlayers: function(request,response){
-        var statusCode = 200;
-        handleInvalidUri(request,response);
+        var uri = helpers.getSplittedUri(request.url),
+            statusCode = 200;
+
+        if(request.method == 'PUT'){
+            if(uri.length == 2){
+                var body = '';
+                request.on('data', function(data){
+                    body += data;
+                });
+
+                request.on('end', function(){
+                    if(body == ''){
+                        data = {
+                            'error': 'NO_PARAM',
+                            'message': 'The request contain no parameter, please provide a team name and a list of players id.'
+                        };
+                        statusCode = 400;
+                        writeJson(response, JSON.stringify(data), statusCode);
+                    }else{
+                        manager.createPlayer(JSON.parse(body), function(err,player){
+                            if(err){
+                                data = {
+                                    'error': 'ERROR',
+                                    'message': err.toString()
+                                };
+                                statusCode = 400;
+                                writeJson(response, JSON.stringify(data), statusCode);
+                            }else{
+                                manager.getTeamName(player.teamId, function(err,teamName){
+                                    if(err){
+                                        data = {
+                                            'error': 'ERROR',
+                                            'message': err.toString()
+                                        };
+                                        statusCode = 400;
+                                        writeJson(response, JSON.stringify(data), statusCode);
+                                    }else{
+                                        data = {
+                                            'action': 'CREATE_PLAYER',
+                                            'status': 'SUCCESS',
+                                            'playerId': player.id,
+                                            'summonerName': player.summonerName,
+                                            'teamName': teamName
+                                        };
+                                        writeJson(response, JSON.stringify(data), statusCode);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }else {
+                handleInvalidUri(request,response);
+            }
+        }else if(request.method == 'GET'){
+            if(uri.length == 3){
+                manager.getPlayer(uri[2],function(err,value){
+                    if(err){
+                        data = JSON.stringify({
+                            'error':err.type,
+                            'message':err.toString()
+                        });
+                        statusCode = 400;
+                    }else{
+                        data = JSON.stringify(value);
+                    }
+                    writeJson(response, data, statusCode);
+                });
+            }else{
+                handleInvalidUri(request,response);
+            }
+        }else{
+            handleInvalidMethod(request,response);
+        }
     },
 
     handleMatches: function(request,response){
@@ -87,7 +171,7 @@ var handler = {
             statusCode = 200;
 
         if(request.method == 'POST'){
-            if(uri.length == 1){
+            if(uri.length == 2){
                 var body = '';
                 request.on('data', function(data){
                     body += data;
@@ -121,8 +205,8 @@ var handler = {
                 handleInvalidUri(request,response);
             }
         }else if(request.method == 'GET'){
-            if(uri.length == 2){
-                manager.getMatche(uri[1],function(err,value){
+            if(uri.length == 3){
+                manager.getMatche(uri[2],function(err,value){
                     if(err){
                         data = JSON.stringify({
                             'error':err.type,

@@ -4,10 +4,24 @@ var helpers = require('./helpers.js');
 // TODO: Add another level (/matches/action/{GET-POST})
 
 module.exports = self = {
-    handleUri: function(uriString){
+    handleFirstLevelUri: function(uriString){
         var uri = helpers.getSplittedUri(uriString);
         if(uri.length != 0){
             switch(uri[0]){
+                case 'manage':
+                    return 'handleManager';
+                break;
+
+                default:
+                    return undefined;
+                break;
+            }
+        }
+    },
+    handleManagerUri: function(uriString){
+        var uri = helpers.getSplittedUri(uriString);
+        if(uri.length != 0){
+            switch(uri[1]){
                 case 'teams':
                     return 'handleTeams';
                 break;
@@ -25,7 +39,6 @@ module.exports = self = {
                 break;
             }
         }
-        return undefined;
     },
     routes: [
 

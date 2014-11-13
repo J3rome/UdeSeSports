@@ -9,6 +9,7 @@ module.exports = self = {
     _: _,
    // Return a valid Id for the selected db sublevel
     getId: function(db,callback,counter){
+        // TODO : Verify that it doesnt give always the same suite of numbers
         if(counter == undefined){
             counter = 0;
         }
@@ -36,6 +37,10 @@ module.exports = self = {
     // Return true if the data required to parse matches info are valid
     validateMatcheData: function(data){
         // TODO: Implement validateMatcheData
+        return true;
+    },
+    validatePlayerData: function(data){
+        // TODO: Implement validatePlayerData
         return true;
     },
     // Return the provided uri in the form of an array
