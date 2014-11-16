@@ -2,9 +2,9 @@
 
 var helpers = require('./helpers.js'),
     gameParser = require('./gameParser.js'),
-    level = require('levelup',{'keyEncoding':'string','valueEncoding':'json'}),
+    level = require('levelup'),
     sublevel = require('level-sublevel'),
-    db = sublevel(level('./testDb')),
+    db = sublevel(level('./testDb', {'valueEncoding':'json'})),
     matches = db.sublevel('matches'),
     teams = db.sublevel('teams'),
     players = db.sublevel('players'),
@@ -38,7 +38,7 @@ module.exports = self = {
                     player_most_wards_bought: '',
                     player_most_wards_placed: ''
                 };
-                teams.put(generatedId,JSON.stringify(team),function(err){
+                teams.put(generatedId,team,function(err){
                     if(err){
                         callback(err);
                     }else{
@@ -60,6 +60,22 @@ module.exports = self = {
             }
         });
     },
+    getAllTeams : function(callback){
+        var allTeams = [];
+        teams.createReadStream().on('data', function(team){
+            // TODO : Verify order
+            allTeams.push(team.value);
+        }).on('error', function(err){
+            // TODO: Handle only the first error ? Or buffer them and try to read all data ?
+            callback(err);
+        }).on('close', function () {
+        }).on('end', function() {
+            if(allTeams.length == 0){
+                // TODO : Return something else than an empty list
+            }
+            callback(undefined, allTeams);
+        });
+    },
     getTeamName : function(id, callback){
         // TODO : Validate team name is not empty
         teams.get(id,function(err,value){
@@ -67,7 +83,7 @@ module.exports = self = {
                 // TODO: Handle error here
                 callback(err);
             }else{
-                callback(undefined,JSON.parse(value).name);
+                callback(undefined,value.name);
             }
         });
     },
@@ -84,7 +100,7 @@ module.exports = self = {
                 // TODO: Update infos in players profiles
                 // TODO: Identify the teamId associated with the 2 teams of this game, extend the object with both teams id
                 // TODO: associate each player with a playerid corresponding with it summoner name
-                matches.put(generatedId, JSON.stringify(data), function(err){
+                matches.put(generatedId, data, function(err){
                     if(err){
                         callback(err);
                     }else{
@@ -101,6 +117,19 @@ module.exports = self = {
             }else{
                 callback(undefined,value);
             }
+        });
+    },
+    getAllMatches : function(callback){
+        var allMatches = [];
+        matches.createReadStream().on('data', function(matche){
+            // TODO : Verify order
+            allMatches.push(matche.value);
+        }).on('error', function(err){
+            // TODO: Handle only the first error ? Or buffer them and try to read all data ?
+            callback(err);
+        }).on('close', function () {
+        }).on('end', function() {
+            callback(undefined, allMatches);
         });
     },
     createPlayer : function(data, callback){
@@ -125,11 +154,11 @@ module.exports = self = {
                     kda : 0,
                     kill_participation : 0
                 };
-                players.put(generatedId,JSON.stringify(player),function(err){
+                players.put(generatedId, player, function(err){
                     if(err){
                         callback(err);
                     }else{
-                        callback(undefined,player);
+                        callback(undefined, player);
                     }
                 });
             }else{
@@ -142,7 +171,6 @@ module.exports = self = {
             if(err){
                 callback(err);
             }else{
-                value = JSON.parse(value);
                 self.getTeamName(value.teamId, function(err, teamName){
                     if(err){
                         callback(err);
@@ -152,6 +180,20 @@ module.exports = self = {
                     }
                 });
             }
+        });
+    },
+    getAllPlayers : function(callback){
+        var allPlayers = [];
+        players.createReadStream().on('data', function(player){
+            // TODO : Verify order
+            allPlayers.push(player.value);
+        }).on('error', function(err){
+            // TODO: Handle only the first error ? Or buffer them and try to read all data ?
+            callback(err);
+        }).on('close', function () {
+            console.log('GetAllPlayers stream closed');
+        }).on('end', function() {
+            callback(undefined, allPlayers);
         });
     }
 }

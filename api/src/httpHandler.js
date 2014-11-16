@@ -69,7 +69,21 @@ var managerHandler = {
                 handleInvalidUri(request,response);
             }
         }else if(request.method == 'GET'){
-            if(uri.length == 3){
+            if(uri.length==2){
+                manager.getAllTeams(function(err,value){
+                    if(err){
+                        data = JSON.stringify({
+                            'error':err.type,
+                            'message':err.toString()
+                        });
+                        statusCode = 400;
+                    }else{
+                        data = JSON.stringify(value);
+                    }
+                    writeJson(response, data, statusCode);
+                });
+            }
+            else if(uri.length == 3){
                 manager.getTeam(uri[2],function(err,value){
                     if(err){
                         data = JSON.stringify({
@@ -145,7 +159,21 @@ var managerHandler = {
                 handleInvalidUri(request,response);
             }
         }else if(request.method == 'GET'){
-            if(uri.length == 3){
+            if(uri.length==2){
+                manager.getAllPlayers(function(err,value){
+                    if(err){
+                        data = JSON.stringify({
+                            'error':err.type,
+                            'message':err.toString()
+                        });
+                        statusCode = 400;
+                    }else{
+                        data = JSON.stringify(value);
+                    }
+                    writeJson(response, data, statusCode);
+                });
+            }
+            else if(uri.length == 3){
                 manager.getPlayer(uri[2],function(err,value){
                     if(err){
                         data = JSON.stringify({
@@ -205,7 +233,21 @@ var managerHandler = {
                 handleInvalidUri(request,response);
             }
         }else if(request.method == 'GET'){
-            if(uri.length == 3){
+            if(uri.length==2){
+                manager.getAllMatches(function(err,value){
+                    if(err){
+                        data = JSON.stringify({
+                            'error':err.type,
+                            'message':err.toString()
+                        });
+                        statusCode = 400;
+                    }else{
+                        data = JSON.stringify(value);
+                    }
+                    writeJson(response, data, statusCode);
+                });
+            }
+            else if(uri.length == 3){
                 manager.getMatche(uri[2],function(err,value){
                     if(err){
                         data = JSON.stringify({
